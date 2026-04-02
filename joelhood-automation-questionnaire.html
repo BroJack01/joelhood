@@ -868,7 +868,8 @@
     const name = group.dataset.name;
 
     group.querySelectorAll('.option').forEach(option => {
-      option.addEventListener('click', () => {
+      option.addEventListener('click', (e) => {
+        e.preventDefault();
         const input = option.querySelector('input');
 
         if (type === 'radio') {
@@ -877,14 +878,21 @@
           input.checked = true;
           answers[name] = input.value;
         } else {
-          // checkbox
-          option.classList.toggle('selected');
-          input.checked = !input.checked;
-          if (!answers[name]) answers[name] = [];
-          if (input.checked) {
-            answers[name].push(input.value);
+          // checkbox — manually toggle to prevent double-fire on mobile
+          const isSelected = option.classList.contains('selected');
+          if (isSelected) {
+            option.classList.remove('selected');
+            input.checked = false;
+            if (answers[name]) {
+              answers[name] = answers[name].filter(v => v !== input.value);
+            }
           } else {
-            answers[name] = answers[name].filter(v => v !== input.value);
+            option.classList.add('selected');
+            input.checked = true;
+            if (!answers[name]) answers[name] = [];
+            if (!answers[name].includes(input.value)) {
+              answers[name].push(input.value);
+            }
           }
         }
 
@@ -1079,7 +1087,30 @@
   }
 
   function openWhatsApp() {
-    window.open('https://wa.me/260XXXXXXXXX?text=Hello%2C%20I%20completed%20the%20Joelhood%20Automation%20diagnostic.', '_blank');
+    var tier = document.getElementById('resultTierName').textContent || 'Unknown Tier';
+    var mirrorBody = document.getElementById('mirrorBody').textContent || '';
+    var costMatch = mirrorBody.match(/K[\d,]+ per month/);
+    var annualMatch = mirrorBody.match(/K[\d,]+ per year/);
+    var monthlyCost = costMatch ? costMatch[0] : 'not calculated';
+    var annualCost = annualMatch ? annualMatch[0] : 'not calculated';
+    var budgetMap = {thinking:'Not yet budgeted',small:'Under K2,000',medium:'K2,000-K10,000',ready:'Ready to invest'};
+    var budgetLabel = budgetMap[answers['budget_readiness']] || '';
+    var message = encodeURIComponent(
+      'Hello Joelhood. I completed the Automation Diagnostic.
+
+' +
+      'Tier: ' + tier + '
+' +
+      'Monthly cost of manual work: ' + monthlyCost + '
+' +
+      'Annual cost: ' + annualCost + '
+' +
+      'Budget readiness: ' + budgetLabel + '
+
+' +
+      'I would like to proceed.'
+    );
+    window.open('https://wa.me/260XXXXXXXXX?text=' + message, '_blank');
   }
 </script>
 
