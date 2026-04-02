@@ -868,37 +868,37 @@
     const name = group.dataset.name;
 
     group.querySelectorAll('.option').forEach(option => {
-      option.addEventListener('click', (e) => {
-        e.preventDefault();
-        const input = option.querySelector('input');
+      const input = option.querySelector('input');
 
-        if (type === 'radio') {
+      if (type === 'radio') {
+        // Radio: listen on the label click
+        option.addEventListener('click', function() {
           group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
           option.classList.add('selected');
           input.checked = true;
           answers[name] = input.value;
-        } else {
-          // checkbox — manually toggle to prevent double-fire on mobile
-          const isSelected = option.classList.contains('selected');
-          if (isSelected) {
-            option.classList.remove('selected');
-            input.checked = false;
-            if (answers[name]) {
-              answers[name] = answers[name].filter(v => v !== input.value);
-            }
-          } else {
+          updateProgress();
+          updateMirror();
+        });
+      } else {
+        // Checkbox: listen on the input change event — fires once reliably on mobile
+        input.addEventListener('change', function() {
+          if (input.checked) {
             option.classList.add('selected');
-            input.checked = true;
             if (!answers[name]) answers[name] = [];
             if (!answers[name].includes(input.value)) {
               answers[name].push(input.value);
             }
+          } else {
+            option.classList.remove('selected');
+            if (answers[name]) {
+              answers[name] = answers[name].filter(v => v !== input.value);
+            }
           }
-        }
-
-        updateProgress();
-        updateMirror();
-      });
+          updateProgress();
+          updateMirror();
+        });
+      }
     });
   });
 
