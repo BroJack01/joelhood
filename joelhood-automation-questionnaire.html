@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joelhood Automation — Business Diagnostic</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ec;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.15);
+    --red: #c0392b;
+    --grey: #2a2a2a;
+    --grey-mid: #444;
+    --grey-light: #888;
+    --border: rgba(201,168,76,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    padding: 60px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+
+  .brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .header-sub {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--grey-light);
+    max-width: 560px;
+  }
+
+  /* Preamble box */
+  .preamble {
+    background: var(--gold-dim);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 28px 32px;
+    margin-bottom: 56px;
+  }
+
+  .preamble p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: rgba(245,242,236,0.8);
+  }
+
+  .preamble p + p {
+    margin-top: 12px;
+  }
+
+  .preamble strong {
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  /* Progress */
+  .progress-bar {
+    height: 2px;
+    background: var(--grey);
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--grey-light);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 64px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section:nth-child(1) { animation-delay: 0.1s; }
+  .section:nth-child(2) { animation-delay: 0.2s; }
+  .section:nth-child(3) { animation-delay: 0.3s; }
+  .section:nth-child(4) { animation-delay: 0.4s; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    padding-top: 4px;
+    white-space: nowrap;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--white);
+  }
+
+  /* Questions */
+  .question {
+    margin-bottom: 40px;
+  }
+
+  .question-label {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--white);
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+
+  .question-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  /* Radio options */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .option:hover {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+  }
+
+  .option.selected {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+  }
+
+  .option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .option-marker {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--grey-mid);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .option.radio .option-marker {
+    border-radius: 50%;
+  }
+
+  .option.selected .option-marker {
+    border-color: var(--gold);
+    background: var(--gold);
+  }
+
+  .option.selected .option-marker::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--black);
+    border-radius: 50%;
+    display: block;
+  }
+
+  .option.checkbox.selected .option-marker::after {
+    content: '✓';
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 0;
+    background: transparent;
+    width: auto;
+    height: auto;
+  }
+
+  .option-text {
+    font-size: 14px;
+    color: rgba(245,242,236,0.8);
+    line-height: 1.4;
+    transition: color 0.2s;
+  }
+
+  .option.selected .option-text {
+    color: var(--white);
+  }
+
+  /* Checkbox grid */
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media (max-width: 560px) {
+    .checkbox-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 56px 0;
+  }
+
+  /* Cost mirror */
+  .mirror-section {
+    background: linear-gradient(135deg, #111 0%, #0f0e0a 100%);
+    border: 1px solid var(--border);
+    padding: 40px;
+    margin: 56px 0;
+    display: none;
+  }
+
+  .mirror-section.visible {
+    display: block;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .mirror-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .mirror-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  .mirror-body {
+    font-size: 14px;
+    line-height: 1.9;
+    color: rgba(245,242,236,0.75);
+  }
+
+  .mirror-number {
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+  }
+
+  .mirror-verdict {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 15px;
+    color: var(--white);
+    line-height: 1.7;
+  }
+
+  .mirror-verdict strong {
+    color: var(--gold);
+  }
+
+  /* Submit button */
+  .submit-area {
+    padding: 48px 0 80px;
+  }
+
+  .btn-submit {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 18px 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-block;
+  }
+
+  .btn-submit:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-submit:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .submit-note {
+    font-size: 13px;
+    color: var(--grey-light);
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+
+  /* Result */
+  .result-section {
+    display: none;
+    padding: 56px 0 80px;
+  }
+
+  .result-section.visible {
+    display: block;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .result-tier-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .result-tier-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 32px;
+    line-height: 1.2;
+  }
+
+  .result-body {
+    font-size: 15px;
+    line-height: 1.85;
+    color: rgba(245,242,236,0.8);
+    margin-bottom: 32px;
+  }
+
+  .result-investment {
+    background: var(--gold-dim);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 24px 28px;
+    margin-bottom: 32px;
+  }
+
+  .result-investment-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .result-investment-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--white);
+  }
+
+  .result-timeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .result-meta-box {
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+
+  .result-meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--grey-light);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .result-meta-value {
+    font-size: 15px;
+    color: var(--white);
+    line-height: 1.4;
+  }
+
+  .revision-policy {
+    border: 1px solid var(--border);
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+
+  .revision-policy h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .revision-policy ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .revision-policy li {
+    font-size: 14px;
+    color: rgba(245,242,236,0.75);
+    line-height: 1.6;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .revision-policy li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+
+  .cta-box {
+    background: var(--grey);
+    padding: 32px;
+    text-align: center;
+  }
+
+  .cta-box p {
+    font-size: 15px;
+    color: rgba(245,242,236,0.8);
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  .btn-whatsapp {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--black);
+    padding: 14px 36px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+  }
+
+  .btn-whatsapp:hover {
+    background: var(--gold-light);
+  }
+
+  /* Bridge message */
+  .bridge-section {
+    display: none;
+    padding: 56px 0 80px;
+  }
+
+  .bridge-section.visible {
+    display: block;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    margin-top: 0;
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--grey-light);
+    letter-spacing: 0.1em;
+  }
+
+  /* Form hidden state */
+  .form-content.hidden {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">Joelhood — Automation Services</div>
+    <h1>Is your business ready to<br><em>stop running on you?</em></h1>
+    <p class="header-sub">Answer honestly. This diagnostic takes 4 minutes and shows you exactly what your current manual workload is costing — before you see a single price.</p>
+  </div>
+
+  <!-- Preamble -->
+  <div class="preamble">
+    <p>Most automation quotes are guesswork. Someone looks at your business for 20 minutes and hands you a number. You have no idea what you are paying for or whether it solves the real problem.</p>
+    <p>This works differently. <strong>Your answers build your own cost picture.</strong> The system calculates what you are currently losing to manual work — in time, in money, in opportunities missed. The investment required only appears after you have seen that number. You decide if it makes sense. No pressure. No pitch.</p>
+    <p><strong>Important:</strong> Be specific where asked. Ranges you select become the numbers used in your cost calculation. Vague answers produce vague results.</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-label">
+    <span id="progressText">Section 1 of 4</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-content" id="formContent">
+
+    <!-- SECTION 1 -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-number">01 —</span>
+        <span class="section-title">Your Business</span>
+      </div>
+
+      <!-- Q1 -->
+      <div class="question" id="q1">
+        <div class="question-label">What type of business do you run?</div>
+        <div class="options" data-name="business_type" data-type="radio">
+          <label class="option radio"><input type="radio" name="business_type" value="Retail or trading"><span class="option-marker"></span><span class="option-text">Retail or trading</span></label>
+          <label class="option radio"><input type="radio" name="business_type" value="Food or hospitality"><span class="option-marker"></span><span class="option-text">Food or hospitality</span></label>
+          <label class="option radio"><input type="radio" name="business_type" value="Services (salon, cleaning, repairs, etc.)"><span class="option-marker"></span><span class="option-text">Services — salon, cleaning, repairs, etc.</span></label>
+          <label class="option radio"><input type="radio" name="business_type" value="Education or training"><span class="option-marker"></span><span class="option-text">Education or training</span></label>
+          <label class="option radio"><input type="radio" name="business_type" value="Creative or media"><span class="option-marker"></span><span class="option-text">Creative or media</span></label>
+          <label class="option radio"><input type="radio" name="business_type" value="Transport or logistics"><span class="option-marker"></span><span class="option-text">Transport or logistics</span></label>
+          <label class="option radio"><input type="radio" name="business_type" value="Other"><span class="option-marker"></span><span class="option-text">Other</span></label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question" id="q2">
+        <div class="question-label">How many people work in or with your business, including yourself?</div>
+        <div class="options" data-name="team_size" data-type="radio">
+          <label class="option radio"><input type="radio" name="team_size" value="1" data-label="Just me"><span class="option-marker"></span><span class="option-text">Just me</span></label>
+          <label class="option radio"><input type="radio" name="team_size" value="2" data-label="Me plus 1–3 others"><span class="option-marker"></span><span class="option-text">Me plus 1–3 others</span></label>
+          <label class="option radio"><input type="radio" name="team_size" value="3" data-label="4–10 people"><span class="option-marker"></span><span class="option-text">4–10 people</span></label>
+          <label class="option radio"><input type="radio" name="team_size" value="4" data-label="More than 10"><span class="option-marker"></span><span class="option-text">More than 10</span></label>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question" id="q3">
+        <div class="question-label">How long have you been running this business?</div>
+        <div class="options" data-name="business_age" data-type="radio">
+          <label class="option radio"><input type="radio" name="business_age" value="Less than 1 year"><span class="option-marker"></span><span class="option-text">Less than 1 year</span></label>
+          <label class="option radio"><input type="radio" name="business_age" value="1–3 years"><span class="option-marker"></span><span class="option-text">1–3 years</span></label>
+          <label class="option radio"><input type="radio" name="business_age" value="More than 3 years"><span class="option-marker"></span><span class="option-text">More than 3 years</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-number">02 —</span>
+        <span class="section-title">Where Your Time Goes</span>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question" id="q4">
+        <div class="question-label">Which of these do you currently do manually?</div>
+        <span class="question-note">SELECT ALL THAT APPLY</span>
+        <div class="checkbox-grid" data-name="manual_tasks" data-type="checkbox">
+          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="receipts" data-minutes="5"><span class="option-marker"></span><span class="option-text">Sending receipts or confirmations</span></label>
+          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="recording" data-minutes="5"><span class="option-marker"></span><span class="option-text">Recording sales or income</span></label>
+          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="followup" data-minutes="10"><span class="option-marker"></span><span class="option-text">Following up with customers</span></label>
+          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="inventory" data-minutes="10"><span class="option-marker"></span><span class="option-text">Tracking stock or inventory</span></label>
+          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="staff" data-minutes="10"><span class="option-marker"></span><span class="option-text">Managing staff hours or attendance</span></label>
+          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="reports" data-minutes="15"><span class="option-marker"></span><span class="option-text">Producing reports or summaries</span></label>
+          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="delivery" data-minutes="10"><span class="option-marker"></span><span class="option-text">Delivering product or service after payment</span></label>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question" id="q5">
+        <div class="question-label">How often does a customer transaction require you to do something manually?</div>
+        <div class="options" data-name="manual_frequency" data-type="radio">
+          <label class="option radio"><input type="radio" name="manual_frequency" value="1.0" data-label="Every single time"><span class="option-marker"></span><span class="option-text">Every single time</span></label>
+          <label class="option radio"><input type="radio" name="manual_frequency" value="0.75" data-label="Most of the time"><span class="option-marker"></span><span class="option-text">Most of the time</span></label>
+          <label class="option radio"><input type="radio" name="manual_frequency" value="0.5" data-label="Sometimes"><span class="option-marker"></span><span class="option-text">Sometimes</span></label>
+          <label class="option radio"><input type="radio" name="manual_frequency" value="0.25" data-label="Rarely"><span class="option-marker"></span><span class="option-text">Rarely</span></label>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question" id="q6">
+        <div class="question-label">How many customer transactions do you handle in a typical week?</div>
+        <div class="options" data-name="weekly_transactions" data-type="radio">
+          <label class="option radio"><input type="radio" name="weekly_transactions" value="8" data-label="Less than 10"><span class="option-marker"></span><span class="option-text">Less than 10</span></label>
+          <label class="option radio"><input type="radio" name="weekly_transactions" value="30" data-label="10–50"><span class="option-marker"></span><span class="option-text">10–50</span></label>
+          <label class="option radio"><input type="radio" name="weekly_transactions" value="120" data-label="51–200"><span class="option-marker"></span><span class="option-text">51–200</span></label>
+          <label class="option radio"><input type="radio" name="weekly_transactions" value="200" data-label="More than 200"><span class="option-marker"></span><span class="option-text">More than 200</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-number">03 —</span>
+        <span class="section-title">Your Business Complexity</span>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question" id="q7">
+        <div class="question-label">Does your business offer more than one type of product or service?</div>
+        <div class="options" data-name="product_variety" data-type="radio">
+          <label class="option radio"><input type="radio" name="product_variety" value="1" data-label="One thing only"><span class="option-marker"></span><span class="option-text">No — one thing only</span></label>
+          <label class="option radio"><input type="radio" name="product_variety" value="2" data-label="2–3 different things"><span class="option-marker"></span><span class="option-text">Yes — 2–3 different things</span></label>
+          <label class="option radio"><input type="radio" name="product_variety" value="3" data-label="Many different things"><span class="option-marker"></span><span class="option-text">Yes — many different things</span></label>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="question" id="q8">
+        <div class="question-label">What kind of records or documents does your business need to produce?</div>
+        <span class="question-note">SELECT ALL THAT APPLY</span>
+        <div class="options" data-name="documents" data-type="checkbox">
+          <label class="option checkbox"><input type="checkbox" name="documents" value="receipts_basic"><span class="option-marker"></span><span class="option-text">Payment receipts or confirmations</span></label>
+          <label class="option checkbox"><input type="checkbox" name="documents" value="sales_summary"><span class="option-marker"></span><span class="option-text">Sales summaries or income records</span></label>
+          <label class="option checkbox"><input type="checkbox" name="documents" value="register"><span class="option-marker"></span><span class="option-text">Simple registers or attendance logs</span></label>
+          <label class="option checkbox"><input type="checkbox" name="documents" value="payslips" data-tier3="true"><span class="option-marker"></span><span class="option-text">Formal payslips with statutory deductions</span></label>
+          <label class="option checkbox"><input type="checkbox" name="documents" value="compliance" data-tier3="true"><span class="option-marker"></span><span class="option-text">Tax or government compliance documents</span></label>
+          <label class="option checkbox"><input type="checkbox" name="documents" value="certificates" data-tier3="true"><span class="option-marker"></span><span class="option-text">Certificates or legally recognised documents</span></label>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="question" id="q9">
+        <div class="question-label">If you have staff, what does managing them currently involve?</div>
+        <span class="question-note">SELECT ALL THAT APPLY</span>
+        <div class="options" data-name="staff_mgmt" data-type="checkbox">
+          <label class="option checkbox"><input type="checkbox" name="staff_mgmt" value="attendance"><span class="option-marker"></span><span class="option-text">Tracking basic attendance or hours</span></label>
+          <label class="option checkbox"><input type="checkbox" name="staff_mgmt" value="salaries"><span class="option-marker"></span><span class="option-text">Calculating and paying salaries or commissions</span></label>
+          <label class="option checkbox"><input type="checkbox" name="staff_mgmt" value="formal" data-tier3="true"><span class="option-marker"></span><span class="option-text">Managing leave or formal employment records</span></label>
+          <label class="option checkbox"><input type="checkbox" name="staff_mgmt" value="none"><span class="option-marker"></span><span class="option-text">I have no staff</span></label>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="question" id="q10">
+        <div class="question-label">Have you ever lost a customer or money because something was not followed up or recorded on time?</div>
+        <div class="options" data-name="loss_history" data-type="radio">
+          <label class="option radio"><input type="radio" name="loss_history" value="frequent"><span class="option-marker"></span><span class="option-text">Yes — more than once</span></label>
+          <label class="option radio"><input type="radio" name="loss_history" value="occasional"><span class="option-marker"></span><span class="option-text">Yes — once or twice</span></label>
+          <label class="option radio"><input type="radio" name="loss_history" value="unsure"><span class="option-marker"></span><span class="option-text">Not that I know of</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-number">04 —</span>
+        <span class="section-title">Readiness</span>
+      </div>
+
+      <!-- Q11 -->
+      <div class="question" id="q11">
+        <div class="question-label">Roughly how much does your business earn in a good month?</div>
+        <div class="options" data-name="monthly_revenue" data-type="radio">
+          <label class="option radio"><input type="radio" name="monthly_revenue" value="31" data-label="Under K5,000"><span class="option-marker"></span><span class="option-text">Under K5,000</span></label>
+          <label class="option radio"><input type="radio" name="monthly_revenue" value="62" data-label="K5,000–K15,000"><span class="option-marker"></span><span class="option-text">K5,000 to K15,000</span></label>
+          <label class="option radio"><input type="radio" name="monthly_revenue" value="140" data-label="K15,000–K30,000"><span class="option-marker"></span><span class="option-text">K15,000 to K30,000</span></label>
+          <label class="option radio"><input type="radio" name="monthly_revenue" value="219" data-label="More than K30,000"><span class="option-marker"></span><span class="option-text">More than K30,000</span></label>
+        </div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="question" id="q12">
+        <div class="question-label">Have you set aside resources to improve how your business runs?</div>
+        <div class="options" data-name="budget_readiness" data-type="radio">
+          <label class="option radio"><input type="radio" name="budget_readiness" value="thinking"><span class="option-marker"></span><span class="option-text">Not yet — but I am thinking about it</span></label>
+          <label class="option radio"><input type="radio" name="budget_readiness" value="small"><span class="option-marker"></span><span class="option-text">Yes — a small amount, under K2,000</span></label>
+          <label class="option radio"><input type="radio" name="budget_readiness" value="medium"><span class="option-marker"></span><span class="option-text">Yes — a reasonable amount, K2,000 to K10,000</span></label>
+          <label class="option radio"><input type="radio" name="budget_readiness" value="ready"><span class="option-marker"></span><span class="option-text">Yes — and I am ready to invest what it takes</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cost Mirror -->
+    <div class="mirror-section" id="costMirror">
+      <div class="mirror-label">— Your Cost of Doing Nothing —</div>
+      <div class="mirror-title" id="mirrorTitle"></div>
+      <div class="mirror-body" id="mirrorBody"></div>
+      <div class="mirror-verdict" id="mirrorVerdict"></div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-area">
+      <button class="btn-submit" id="submitBtn" onclick="calculateResult()">
+        Show My Diagnosis
+      </button>
+      <p class="submit-note">Your answers are used only to diagnose your tier and calculate your cost. Nothing is stored or shared.</p>
+    </div>
+
+  </div><!-- end form-content -->
+
+  <!-- RESULT -->
+  <div class="result-section" id="resultSection">
+    <div class="result-tier-label" id="resultTierLabel"></div>
+    <div class="result-tier-name" id="resultTierName"></div>
+    <div class="result-body" id="resultBody"></div>
+
+    <div class="result-investment">
+      <div class="result-investment-label">— INVESTMENT RANGE —</div>
+      <div class="result-investment-amount" id="resultInvestment"></div>
+    </div>
+
+    <div class="result-timeline">
+      <div class="result-meta-box">
+        <div class="result-meta-label">Build Timeline</div>
+        <div class="result-meta-value" id="resultTimeline"></div>
+      </div>
+      <div class="result-meta-box">
+        <div class="result-meta-label">Payment Structure</div>
+        <div class="result-meta-value" id="resultPayment"></div>
+      </div>
+    </div>
+
+    <div class="revision-policy">
+      <h4>— Revision Policy —</h4>
+      <ul id="revisionList"></ul>
+    </div>
+
+    <div class="cta-box">
+      <p id="ctaText"></p>
+      <button class="btn-whatsapp" onclick="openWhatsApp()">Start on WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- BRIDGE -->
+  <div class="bridge-section" id="bridgeSection">
+    <div class="result-tier-label">— One Conversation First —</div>
+    <div class="result-tier-name" style="font-size:28px;">Your business needs a serious system.<br>Let's talk before we price it.</div>
+    <div class="result-body">
+      Based on what you have told us, your business requires a Full Infrastructure build. That is a significant investment — and the budget you indicated is below what that build costs.<br><br>
+      That does not close the door. It means we need to have an honest conversation first — about phasing the build, about what solves the most urgent problem now, and about what makes sense for where your business is today.<br><br>
+      No obligation. No pressure. Just a real conversation.
+    </div>
+    <div class="cta-box" style="margin-top:32px;">
+      <p>Reach out directly on WhatsApp and mention your diagnostic result.</p>
+      <button class="btn-whatsapp" onclick="openWhatsApp()">Let's Talk</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">Joelhood Automation — Built in Zambia, built for Zambia</div>
+  </div>
+
+</div>
+
+<script>
+  // Track selections
+  const answers = {};
+
+  // Option click handler
+  document.querySelectorAll('.options').forEach(group => {
+    const type = group.dataset.type;
+    const name = group.dataset.name;
+
+    group.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', () => {
+        const input = option.querySelector('input');
+
+        if (type === 'radio') {
+          group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          option.classList.add('selected');
+          input.checked = true;
+          answers[name] = input.value;
+        } else {
+          // checkbox
+          option.classList.toggle('selected');
+          input.checked = !input.checked;
+          if (!answers[name]) answers[name] = [];
+          if (input.checked) {
+            answers[name].push(input.value);
+          } else {
+            answers[name] = answers[name].filter(v => v !== input.value);
+          }
+        }
+
+        updateProgress();
+        updateMirror();
+      });
+    });
+  });
+
+  function updateProgress() {
+    const required = ['business_type','team_size','business_age','manual_frequency','weekly_transactions','product_variety','loss_history','monthly_revenue','budget_readiness'];
+    const filled = required.filter(k => answers[k] && answers[k] !== '').length;
+    const pct = Math.round((filled / required.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+
+    const section = pct < 30 ? 1 : pct < 55 ? 2 : pct < 80 ? 3 : 4;
+    document.getElementById('progressText').textContent = 'Section ' + section + ' of 4';
+  }
+
+  function updateMirror() {
+    const txn = parseFloat(answers['weekly_transactions'] || 0);
+    const freq = parseFloat(answers['manual_frequency'] || 0);
+    const rate = parseFloat(answers['monthly_revenue'] || 0);
+    const tasks = answers['manual_tasks'] || [];
+
+    if (!txn || !freq || !rate || tasks.length === 0) return;
+
+    // Calculate minutes per transaction
+    const taskMinutes = {
+      receipts: 5, recording: 5, followup: 10,
+      inventory: 10, staff: 10, delivery: 10
+    };
+    let minutesPerTxn = tasks.reduce((sum, t) => sum + (taskMinutes[t] || 0), 0);
+    // Reports are weekly not per transaction
+    const hasReports = tasks.includes('reports');
+    const weeklyReportMins = hasReports ? 15 : 0;
+
+    const weeklyMins = (txn * minutesPerTxn * freq) + weeklyReportMins;
+    const monthlyHours = Math.round((weeklyMins * 4) / 60);
+    const monthlyCost = Math.round(monthlyHours * rate);
+    const annualCost = monthlyCost * 12;
+
+    const txnLabel = answers['weekly_transactions'] == 8 ? 'under 10' :
+                     answers['weekly_transactions'] == 30 ? 'around 30' :
+                     answers['weekly_transactions'] == 120 ? 'around 120' : 'over 200';
+
+    const freqLabel = freq == 1.0 ? 'every single one requires your hands' :
+                      freq == 0.75 ? 'most require your hands' :
+                      freq == 0.5 ? 'about half require your hands' : 'a few require your hands';
+
+    const mirror = document.getElementById('costMirror');
+    document.getElementById('mirrorTitle').textContent = 'You are spending ' + monthlyHours + ' hours a month doing work a system should handle.';
+    document.getElementById('mirrorBody').innerHTML =
+      'You handle <span class="mirror-number">' + txnLabel + '</span> transactions a week — and ' + freqLabel + '. ' +
+      'The tasks you are doing manually add up to roughly <span class="mirror-number">' + Math.round(minutesPerTxn) + ' minutes per transaction</span>. ' +
+      'Over a month that is <span class="mirror-number">' + monthlyHours + ' hours</span> of your time going into tasks that generate no new value — only maintenance.<br><br>' +
+      'Based on what your business earns, your time is worth approximately <span class="mirror-number">K' + rate + ' per hour</span>. ' +
+      'That means manual work is costing you <span class="mirror-number">K' + monthlyCost.toLocaleString() + ' per month</span> — ' +
+      '<span class="mirror-number">K' + annualCost.toLocaleString() + ' per year</span>.';
+
+    document.getElementById('mirrorVerdict').innerHTML =
+      'That is not a rough estimate. <strong>That is your number</strong> — calculated from your own answers. ' +
+      'The question is no longer whether automation is worth it. It is whether you can afford to keep doing without it.';
+
+    mirror.classList.add('visible');
+  }
+
+  function calculateResult() {
+    const required = ['business_type','team_size','business_age','manual_frequency','weekly_transactions','product_variety','monthly_revenue','budget_readiness'];
+    const missing = required.filter(k => !answers[k]);
+    if (missing.length > 3) {
+      alert('Please complete more of the form before seeing your diagnosis.');
+      return;
+    }
+
+    // Tier determination
+    const docs = answers['documents'] || [];
+    const staffMgmt = answers['staff_mgmt'] || [];
+    const txn = parseFloat(answers['weekly_transactions'] || 0);
+    const manualTasks = answers['manual_tasks'] || [];
+    const products = parseInt(answers['product_variety'] || 1);
+    const budget = answers['budget_readiness'];
+
+    const tier3Docs = docs.some(d => ['payslips','compliance','certificates'].includes(d));
+    const tier3Staff = staffMgmt.includes('formal');
+    const highVolume = txn >= 200 && (products >= 2 || manualTasks.length >= 4);
+
+    let tier;
+    if (tier3Docs || tier3Staff || highVolume) {
+      tier = 3;
+    } else if (
+      docs.includes('sales_summary') || docs.includes('register') ||
+      staffMgmt.includes('attendance') || staffMgmt.includes('salaries') ||
+      manualTasks.length >= 4 || txn >= 51 || products >= 2
+    ) {
+      tier = 2;
+    } else {
+      tier = 1;
+    }
+
+    // Budget conflict
+    if (tier === 3 && (budget === 'thinking' || budget === 'small')) {
+      document.getElementById('formContent').classList.add('hidden');
+      document.getElementById('bridgeSection').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (tier === 2 && budget === 'thinking') {
+      // Show result with soft note
+    }
+
+    showResult(tier, budget);
+  }
+
+  function showResult(tier, budget) {
+    const tiers = {
+      1: {
+        label: 'Your Diagnosis — Tier One',
+        name: 'Single Flow System',
+        body: 'Your business is at a stage where one or two repetitive tasks are taking your time every single day — sending confirmations, recording payments, delivering what a customer ordered. Right now you are the system. Every time a customer buys, something requires your hands.\n\nA Single Flow system removes that entirely. One trigger — a customer pays — sets off a chain that handles the confirmation, the record, and the delivery without you touching it. You get your time back. Your customer gets a faster, more professional experience.\n\nThis is a focused, clean build. Designed specifically around the one flow your business runs on.',
+        investment: 'K3,000 to K5,000',
+        timeline: '1–3 working days',
+        payment: 'Full payment upfront via MoMo before build begins',
+        revisions: [
+          'Two rounds of revisions included at no extra charge',
+          'A revision means adjusting existing logic — not adding new features',
+          'Additional features or scope changes are quoted separately before any work begins',
+          'Revisions requested after handover and sign-off attract a new quote'
+        ],
+        cta: 'Ready to start? Send a WhatsApp message with your business name and the words Single Flow. We will confirm your intake form and begin within 48 hours of payment.'
+      },
+      2: {
+        label: 'Your Diagnosis — Tier Two',
+        name: 'Connected Operations System',
+        body: 'Your business has grown past the point where one simple fix is enough. You are managing customers, tracking money, coordinating with one or two other people — and most of that is living in your head or on paper. When you are not there, things slow down or fall through the cracks.\n\nA Connected Operations system links your moving parts together. Payments trigger records. Records feed summaries. Follow-ups happen without you initiating them. You stop being the thread that holds everything together.\n\nThis is a more involved build — but it is the kind of system that makes a small business start behaving like a serious one.',
+        investment: 'K10,000 to K17,000',
+        timeline: '1–2 weeks',
+        payment: '30% upfront via MoMo. 70% on delivery and sign-off',
+        revisions: [
+          'Three rounds of revisions included at no extra charge',
+          'Each revision round covers one set of consolidated feedback — not individual requests over time',
+          'Scope changes or additions discovered mid-build are quoted before work continues',
+          'Post-handover support for 14 days included for bug fixes only — not new features'
+        ],
+        cta: 'Send a WhatsApp message with your business name and the words Connected System. We will schedule a short intake call to confirm scope before any payment is made.'
+      },
+      3: {
+        label: 'Your Diagnosis — Tier Three',
+        name: 'Full Business Infrastructure',
+        body: 'You are running something with real weight — staff, multiple products or services, compliance requirements, clients who expect formal documentation. The gap between how your business operates now and how it needs to operate is costing you money, time, and credibility.\n\nA Full Business Infrastructure system handles the complete picture. Financial statements at the click of a button. Payslips generated automatically. Certificates issued without your involvement. Reports that tell you exactly where your business stands at any moment.\n\nThis is a serious build for a serious business. It is not the cheapest option — but it is the one that pays for itself.',
+        investment: 'K38,000 to K60,000',
+        timeline: '3–6 weeks depending on complexity confirmed at intake',
+        payment: '50% upfront via MoMo before build begins. 50% on delivery and sign-off',
+        revisions: [
+          'Three structured revision rounds included — one per major build phase',
+          'Each round is scheduled, not ad hoc — feedback consolidated before the round opens',
+          'Scope changes require a written change request and are quoted before proceeding',
+          'Post-handover support for 30 days for bug fixes and logic adjustments',
+          'Ongoing maintenance beyond 30 days available on a separate monthly retainer'
+        ],
+        cta: 'This build begins with a proper intake process. Send a WhatsApp message with your business name and the words Full Infrastructure. We will schedule a structured intake session before any payment is discussed.'
+      }
+    };
+
+    const t = tiers[tier];
+    document.getElementById('resultTierLabel').textContent = t.label;
+    document.getElementById('resultTierName').textContent = t.name;
+    document.getElementById('resultBody').innerHTML = t.body.replace(/\n\n/g, '<br><br>');
+    document.getElementById('resultInvestment').textContent = t.investment;
+    document.getElementById('resultTimeline').textContent = t.timeline;
+    document.getElementById('resultPayment').textContent = t.payment;
+
+    const revList = document.getElementById('revisionList');
+    revList.innerHTML = '';
+    t.revisions.forEach(r => {
+      const li = document.createElement('li');
+      li.textContent = r;
+      revList.appendChild(li);
+    });
+
+    document.getElementById('ctaText').textContent = t.cta;
+
+    if (tier === 2 && budget === 'thinking') {
+      document.getElementById('ctaText').textContent = 'Your diagnosis is Tier Two. Before proceeding, note that this build starts at K10,000. If budget is still being arranged, reach out anyway — we can discuss a phased approach. ' + t.cta;
+    }
+
+    document.getElementById('formContent').classList.add('hidden');
+    document.getElementById('resultSection').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function openWhatsApp() {
+    window.open('https://wa.me/260XXXXXXXXX?text=Hello%2C%20I%20completed%20the%20Joelhood%20Automation%20diagnostic.', '_blank');
+  }
+</script>
+
+</body>
+</html>
