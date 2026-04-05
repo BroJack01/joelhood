@@ -286,6 +286,58 @@
     color: var(--white);
   }
 
+  /* Time input that appears after checkbox is selected */
+  .time-input-row {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 18px 16px 18px;
+    background: rgba(201,168,76,0.05);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-top: -10px;
+    margin-bottom: 4px;
+  }
+
+  .time-input-row.visible {
+    display: flex;
+  }
+
+  .time-input-row label {
+    font-size: 12px;
+    color: var(--grey-light);
+    line-height: 1.5;
+  }
+
+  .time-input-row .input-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .time-input-row input[type="number"] {
+    background: var(--grey);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    padding: 10px 14px;
+    width: 90px;
+    text-align: center;
+    -moz-appearance: textfield;
+  }
+
+  .time-input-row input[type="number"]::-webkit-outer-spin-button,
+  .time-input-row input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .time-input-row span {
+    font-size: 13px;
+    color: var(--grey-light);
+  }
+
   /* Checkbox grid */
   .checkbox-grid {
     display: grid;
@@ -668,14 +720,35 @@
       <div class="question" id="q4">
         <div class="question-label">Which of these do you currently do manually?</div>
         <span class="question-note">SELECT ALL THAT APPLY</span>
-        <div class="checkbox-grid" data-name="manual_tasks" data-type="checkbox">
-          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="receipts" data-minutes="5"><span class="option-marker"></span><span class="option-text">Sending receipts or confirmations</span></label>
-          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="recording" data-minutes="5"><span class="option-marker"></span><span class="option-text">Recording sales or income</span></label>
-          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="followup" data-minutes="10"><span class="option-marker"></span><span class="option-text">Following up with customers</span></label>
-          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="inventory" data-minutes="10"><span class="option-marker"></span><span class="option-text">Tracking stock or inventory</span></label>
-          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="staff" data-minutes="10"><span class="option-marker"></span><span class="option-text">Managing staff hours or attendance</span></label>
-          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="reports" data-minutes="15"><span class="option-marker"></span><span class="option-text">Producing reports or summaries</span></label>
-          <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="delivery" data-minutes="10"><span class="option-marker"></span><span class="option-text">Delivering product or service after payment</span></label>
+        <div class="checkbox-grid options" data-name="manual_tasks" data-type="checkbox">
+          <div class="task-wrap">
+            <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="receipts" data-timeid="t_receipts"><span class="option-marker"></span><span class="option-text">Sending receipts or confirmations</span></label>
+            <div class="time-input-row" id="t_receipts"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="receipts"><span>mins</span></div></div>
+          </div>
+          <div class="task-wrap">
+            <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="recording" data-timeid="t_recording"><span class="option-marker"></span><span class="option-text">Recording sales or income</span></label>
+            <div class="time-input-row" id="t_recording"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="recording"><span>mins</span></div></div>
+          </div>
+          <div class="task-wrap">
+            <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="followup" data-timeid="t_followup"><span class="option-marker"></span><span class="option-text">Following up with customers</span></label>
+            <div class="time-input-row" id="t_followup"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="followup"><span>mins</span></div></div>
+          </div>
+          <div class="task-wrap">
+            <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="inventory" data-timeid="t_inventory"><span class="option-marker"></span><span class="option-text">Tracking stock or inventory</span></label>
+            <div class="time-input-row" id="t_inventory"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="inventory"><span>mins</span></div></div>
+          </div>
+          <div class="task-wrap">
+            <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="staff" data-timeid="t_staff"><span class="option-marker"></span><span class="option-text">Managing staff hours or attendance</span></label>
+            <div class="time-input-row" id="t_staff"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="staff"><span>mins</span></div></div>
+          </div>
+          <div class="task-wrap">
+            <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="reports" data-timeid="t_reports"><span class="option-marker"></span><span class="option-text">Producing reports or summaries</span></label>
+            <div class="time-input-row" id="t_reports"><label>How many minutes does this take you per week in total?</label><div class="input-line"><input type="number" min="1" max="300" placeholder="0" data-task="reports" data-weekly="true"><span>mins</span></div></div>
+          </div>
+          <div class="task-wrap">
+            <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="delivery" data-timeid="t_delivery"><span class="option-marker"></span><span class="option-text">Delivering product or service after payment</span></label>
+            <div class="time-input-row" id="t_delivery"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="delivery"><span>mins</span></div></div>
+          </div>
         </div>
       </div>
 
@@ -826,6 +899,11 @@
       </div>
     </div>
 
+    <div class="result-investment" style="margin-bottom:24px;">
+      <div class="result-investment-label">— DELIVERY PHASES —</div>
+      <div class="result-meta-value" id="resultPhases" style="font-size:14px; line-height:1.8; color:rgba(245,242,236,0.8);"></div>
+    </div>
+
     <div class="revision-policy">
       <h4>— Revision Policy —</h4>
       <ul id="revisionList"></ul>
@@ -862,43 +940,72 @@
   // Track selections
   const answers = {};
 
-  // Option click handler
-  document.querySelectorAll('.options').forEach(group => {
-    const type = group.dataset.type;
+  // Radio handler — one selection at a time, new tap replaces old
+  document.querySelectorAll('.options[data-type="radio"]').forEach(group => {
     const name = group.dataset.name;
-
     group.querySelectorAll('.option').forEach(option => {
-      const input = option.querySelector('input');
+      option.addEventListener('click', () => {
+        const input = option.querySelector('input');
+        group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+        input.checked = true;
+        answers[name] = input.value;
+        updateProgress();
+        updateMirror();
+      });
+    });
+  });
 
-      if (type === 'radio') {
-        // Radio: listen on the label click
-        option.addEventListener('click', function() {
-          group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  // Checkbox handler — multiple selections, tap holds until tapped again
+  document.querySelectorAll('.options[data-type="checkbox"]').forEach(group => {
+    const name = group.dataset.name;
+    group.querySelectorAll('input[type="checkbox"]').forEach(input => {
+      const option = input.closest('.option');
+      input.addEventListener('change', () => {
+        if (input.checked) {
           option.classList.add('selected');
-          input.checked = true;
-          answers[name] = input.value;
-          updateProgress();
-          updateMirror();
-        });
-      } else {
-        // Checkbox: listen on the input change event — fires once reliably on mobile
-        input.addEventListener('change', function() {
-          if (input.checked) {
-            option.classList.add('selected');
-            if (!answers[name]) answers[name] = [];
-            if (!answers[name].includes(input.value)) {
-              answers[name].push(input.value);
-            }
-          } else {
-            option.classList.remove('selected');
-            if (answers[name]) {
-              answers[name] = answers[name].filter(v => v !== input.value);
+          if (!answers[name]) answers[name] = [];
+          if (!answers[name].includes(input.value)) answers[name].push(input.value);
+          // Show time input if this task has one
+          const timeId = input.dataset.timeid;
+          if (timeId) {
+            const row = document.getElementById(timeId);
+            if (row) row.classList.add('visible');
+          }
+        } else {
+          option.classList.remove('selected');
+          if (answers[name]) answers[name] = answers[name].filter(v => v !== input.value);
+          // Hide and clear time input
+          const timeId = input.dataset.timeid;
+          if (timeId) {
+            const row = document.getElementById(timeId);
+            if (row) {
+              row.classList.remove('visible');
+              const numInput = row.querySelector('input[type="number"]');
+              if (numInput) numInput.value = '';
             }
           }
-          updateProgress();
-          updateMirror();
-        });
-      }
+        }
+        updateProgress();
+        updateMirror();
+      });
+    });
+  });
+
+  // Time input — stop tap from bubbling to parent label, allow keyboard to open
+  document.querySelectorAll('.time-input-row input[type="number"]').forEach(numInput => {
+    numInput.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+    numInput.addEventListener('touchstart', (e) => {
+      e.stopPropagation();
+    });
+    numInput.addEventListener('touchend', (e) => {
+      e.stopPropagation();
+      numInput.focus();
+    });
+    numInput.addEventListener('input', () => {
+      updateMirror();
     });
   });
 
@@ -921,15 +1028,25 @@
 
     if (!txn || !freq || !rate || tasks.length === 0) return;
 
-    // Calculate minutes per transaction
-    const taskMinutes = {
-      receipts: 5, recording: 5, followup: 10,
-      inventory: 10, staff: 10, delivery: 10
-    };
-    let minutesPerTxn = tasks.reduce((sum, t) => sum + (taskMinutes[t] || 0), 0);
-    // Reports are weekly not per transaction
-    const hasReports = tasks.includes('reports');
-    const weeklyReportMins = hasReports ? 15 : 0;
+    // Read client-entered minutes from visible time inputs
+    let minutesPerTxn = 0;
+    let weeklyReportMins = 0;
+    let allMinutesEntered = true;
+
+    tasks.forEach(task => {
+      const numInput = document.querySelector('.time-input-row input[data-task="' + task + '"]');
+      const mins = numInput ? parseFloat(numInput.value) : 0;
+      if (!mins || mins <= 0) { allMinutesEntered = false; return; }
+      if (task === 'reports') {
+        weeklyReportMins = mins;
+      } else {
+        minutesPerTxn += mins;
+      }
+    });
+
+    // Only show mirror once at least one task has a time entered
+    const hasAnyTime = minutesPerTxn > 0 || weeklyReportMins > 0;
+    if (!hasAnyTime) return;
 
     const weeklyMins = (txn * minutesPerTxn * freq) + weeklyReportMins;
     const monthlyHours = Math.round((weeklyMins * 4) / 60);
@@ -948,14 +1065,15 @@
     document.getElementById('mirrorTitle').textContent = 'You are spending ' + monthlyHours + ' hours a month doing work a system should handle.';
     document.getElementById('mirrorBody').innerHTML =
       'You handle <span class="mirror-number">' + txnLabel + '</span> transactions a week — and ' + freqLabel + '. ' +
-      'The tasks you are doing manually add up to roughly <span class="mirror-number">' + Math.round(minutesPerTxn) + ' minutes per transaction</span>. ' +
+      'The tasks you are doing manually add up to <span class="mirror-number">' + Math.round(minutesPerTxn) + ' minutes per transaction</span> — your own numbers, not our estimate. ' +
       'Over a month that is <span class="mirror-number">' + monthlyHours + ' hours</span> of your time going into tasks that generate no new value — only maintenance.<br><br>' +
       'Based on what your business earns, your time is worth approximately <span class="mirror-number">K' + rate + ' per hour</span>. ' +
       'That means manual work is costing you <span class="mirror-number">K' + monthlyCost.toLocaleString() + ' per month</span> — ' +
-      '<span class="mirror-number">K' + annualCost.toLocaleString() + ' per year</span>.';
+      '<span class="mirror-number">K' + annualCost.toLocaleString() + ' per year</span>.<br><br>' +
+      'This figure does not include the customers you lost to slow follow-ups, the opportunities you could not pursue because your time was already spent, or the growth sitting idle while you maintain instead of build.';
 
     document.getElementById('mirrorVerdict').innerHTML =
-      'That is not a rough estimate. <strong>That is your number</strong> — calculated from your own answers. ' +
+      'These are not random estimates. <strong>These are your numbers</strong> — entered by you, calculated from your own reality. ' +
       'The question is no longer whether automation is worth it. It is whether you can afford to keep doing without it.';
 
     mirror.classList.add('visible');
@@ -1014,48 +1132,52 @@
       1: {
         label: 'Your Diagnosis — Tier One',
         name: 'Single Flow System',
-        body: 'Your business is at a stage where one or two repetitive tasks are taking your time every single day — sending confirmations, recording payments, delivering what a customer ordered. Right now you are the system. Every time a customer buys, something requires your hands.\n\nA Single Flow system removes that entirely. One trigger — a customer pays — sets off a chain that handles the confirmation, the record, and the delivery without you touching it. You get your time back. Your customer gets a faster, more professional experience.\n\nThis is a focused, clean build. Designed specifically around the one flow your business runs on.',
+        body: 'Your business is at a stage where one or two repetitive tasks are taking your time every single day — sending confirmations, recording payments, delivering what a customer ordered. Right now you are the system. Every time a customer buys, something requires your hands.\n\nA Single Flow system removes that entirely. One trigger — a customer pays — sets off a chain that handles the confirmation, the record, and the delivery without you touching it. You get your time back. Your customer gets a faster, more professional experience.\n\nThis is a focused, clean build. Built on Google tools you already use. Designed specifically around the one flow your business runs on.',
         investment: 'K3,000 to K5,000',
-        timeline: '1–3 working days',
-        payment: 'Full payment upfront via MoMo before build begins',
+        timeline: '2 weeks from payment',
+        payment: 'Full payment upfront via MoMo before build begins. Payment is due within 24 hours of agreeing to proceed.',
+        phases: 'Phase 1 (Week 1) — Core flow built and tested internally. Phase 2 (Week 2) — Delivered to you, tested together, and signed off.',
         revisions: [
           'Two rounds of revisions included at no extra charge',
           'A revision means adjusting existing logic — not adding new features',
-          'Additional features or scope changes are quoted separately before any work begins',
-          'Revisions requested after handover and sign-off attract a new quote'
+          'Scope changes are quoted separately before any work begins',
+          'Revisions requested after sign-off attract a new quote'
         ],
-        cta: 'Ready to start? Send a WhatsApp message with your business name and the words Single Flow. We will confirm your intake form and begin within 48 hours of payment.'
+        cta: 'Ready to start? Send a WhatsApp message with your business name and the words Single Flow. We confirm scope, you pay, we begin within 48 hours.'
       },
       2: {
         label: 'Your Diagnosis — Tier Two',
         name: 'Connected Operations System',
-        body: 'Your business has grown past the point where one simple fix is enough. You are managing customers, tracking money, coordinating with one or two other people — and most of that is living in your head or on paper. When you are not there, things slow down or fall through the cracks.\n\nA Connected Operations system links your moving parts together. Payments trigger records. Records feed summaries. Follow-ups happen without you initiating them. You stop being the thread that holds everything together.\n\nThis is a more involved build — but it is the kind of system that makes a small business start behaving like a serious one.',
+        body: 'Your business has grown past the point where one simple fix is enough. You are managing customers, tracking money, coordinating with one or two other people — and most of that is living in your head or on paper. When you are not there, things slow down or fall through.\n\nA Connected Operations system links your moving parts together. Payments trigger records. Records feed summaries. Follow-ups happen without you initiating them. You stop being the thread holding everything together.\n\nYou may have looked at software solutions — QuickBooks, Zoho, Wave. Those are built for formalised markets with credit cards, stable internet, and Western business structures. This is built for how your business actually runs — MoMo payments, WhatsApp communication, Zambian compliance requirements. No subscription fees. No foreign templates. Your system, your environment.',
         investment: 'K10,000 to K17,000',
-        timeline: '1–2 weeks',
-        payment: '30% upfront via MoMo. 70% on delivery and sign-off',
+        timeline: '6 to 10 weeks from first payment',
+        payment: '30% upfront before build begins. 40% on Phase 1 delivery. 30% on Phase 2 delivery and sign-off. Each phase payment is due within 7 days of delivery. After 7 days a 5% weekly fee applies to the outstanding amount.',
+        phases: 'Phase 1 (Weeks 1–4) — Core flows built and working. Payments trigger records. Basic automation running. You test it live. Phase 2 (Weeks 5–10) — Connected layers added. Reporting, summaries, follow-up automation. Full system delivered and signed off.',
         revisions: [
-          'Three rounds of revisions included at no extra charge',
-          'Each revision round covers one set of consolidated feedback — not individual requests over time',
-          'Scope changes or additions discovered mid-build are quoted before work continues',
-          'Post-handover support for 14 days included for bug fixes only — not new features'
+          'Three rounds of revisions included — one per phase plus one final round',
+          'Each revision round covers one consolidated set of feedback submitted within 48 hours of phase delivery',
+          'Scope changes discovered mid-build are quoted before work continues',
+          'Post-handover support for 14 days for bug fixes only',
+          'Ongoing maintenance available on a separate monthly retainer'
         ],
-        cta: 'Send a WhatsApp message with your business name and the words Connected System. We will schedule a short intake call to confirm scope before any payment is made.'
+        cta: 'Send a WhatsApp message with your business name and the words Connected System. We schedule a short intake call to confirm scope. No payment until scope is agreed.'
       },
       3: {
         label: 'Your Diagnosis — Tier Three',
         name: 'Full Business Infrastructure',
-        body: 'You are running something with real weight — staff, multiple products or services, compliance requirements, clients who expect formal documentation. The gap between how your business operates now and how it needs to operate is costing you money, time, and credibility.\n\nA Full Business Infrastructure system handles the complete picture. Financial statements at the click of a button. Payslips generated automatically. Certificates issued without your involvement. Reports that tell you exactly where your business stands at any moment.\n\nThis is a serious build for a serious business. It is not the cheapest option — but it is the one that pays for itself.',
+        body: 'You are running something with real weight — staff, multiple products or services, compliance requirements, clients who expect formal documentation. The gap between how your business operates now and how it needs to operate is costing you money, time, and credibility you may not fully see yet.\n\nA Full Business Infrastructure system handles the complete picture. Financial statements at the click of a button. Payslips generated automatically. Certificates issued without your involvement. Reports that tell you exactly where your business stands at any moment.\n\nOff-the-shelf software cannot do this for a Zambian business. It does not know your statutory deductions. It does not integrate with MoMo. It does not speak to how your staff, clients, and operations actually work. This is built from the ground up around your specific reality — using Google tools you already have access to, with no foreign subscription fees and no templates that do not fit.',
         investment: 'K38,000 to K60,000',
-        timeline: '3–6 weeks depending on complexity confirmed at intake',
-        payment: '50% upfront via MoMo before build begins. 50% on delivery and sign-off',
+        timeline: '4 to 6 months from first payment',
+        payment: '35% upfront before build begins. 25% on Phase 1 delivery. 25% on Phase 2 delivery. 15% on Phase 3 delivery and final sign-off. Each phase payment due within 7 days of delivery. After 7 days a 5% weekly fee applies to the outstanding amount.',
+        phases: 'Phase 1 (Month 1) — Foundation. Core data capture, MoMo integration, basic automation running. You test and confirm before Phase 2 begins. Phase 2 (Months 2–3) — Operations layer. Staff tracking, payslip generation, sales reporting. Delivered and tested. Phase 3 (Months 4–6) — Full infrastructure. Compliance documents, certificates, financial statements, final refinements. Complete system signed off.',
         revisions: [
-          'Three structured revision rounds included — one per major build phase',
-          'Each round is scheduled, not ad hoc — feedback consolidated before the round opens',
-          'Scope changes require a written change request and are quoted before proceeding',
+          'Three structured revision rounds — one per build phase',
+          'Each round opens after phase delivery and closes after 48 hours — feedback must be consolidated',
+          'Changes to previously approved phases require a written change request and new quote',
           'Post-handover support for 30 days for bug fixes and logic adjustments',
           'Ongoing maintenance beyond 30 days available on a separate monthly retainer'
         ],
-        cta: 'This build begins with a proper intake process. Send a WhatsApp message with your business name and the words Full Infrastructure. We will schedule a structured intake session before any payment is discussed.'
+        cta: 'This build begins with a structured intake process. Send a WhatsApp message with your business name and the words Full Infrastructure. We schedule an intake session. No payment until full scope is documented and agreed.'
       }
     };
 
@@ -1066,6 +1188,8 @@
     document.getElementById('resultInvestment').textContent = t.investment;
     document.getElementById('resultTimeline').textContent = t.timeline;
     document.getElementById('resultPayment').textContent = t.payment;
+    const phasesEl = document.getElementById('resultPhases');
+    if (phasesEl) phasesEl.textContent = t.phases;
 
     const revList = document.getElementById('revisionList');
     revList.innerHTML = '';
@@ -1086,31 +1210,8 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function openWhatsApp() {
-    var tier = document.getElementById('resultTierName').textContent || 'Unknown Tier';
-    var mirrorBody = document.getElementById('mirrorBody').textContent || '';
-    var costMatch = mirrorBody.match(/K[\d,]+ per month/);
-    var annualMatch = mirrorBody.match(/K[\d,]+ per year/);
-    var monthlyCost = costMatch ? costMatch[0] : 'not calculated';
-    var annualCost = annualMatch ? annualMatch[0] : 'not calculated';
-    var budgetMap = {thinking:'Not yet budgeted',small:'Under K2,000',medium:'K2,000-K10,000',ready:'Ready to invest'};
-    var budgetLabel = budgetMap[answers['budget_readiness']] || '';
-    var message = encodeURIComponent(
-      'Hello Joelhood. I completed the Automation Diagnostic.
-
-' +
-      'Tier: ' + tier + '
-' +
-      'Monthly cost of manual work: ' + monthlyCost + '
-' +
-      'Annual cost: ' + annualCost + '
-' +
-      'Budget readiness: ' + budgetLabel + '
-
-' +
-      'I would like to proceed.'
-    );
-    window.open('https://wa.me/260XXXXXXXXX?text=' + message, '_blank');
+    function openWhatsApp() {
+    window.open('https://wa.me/260977858275?text=Hello%2C%20I%20completed%20the%20Joelhood%20Automation%20diagnostic.', '_blank');
   }
 </script>
 
