@@ -1211,7 +1211,52 @@
   }
 
     function openWhatsApp() {
-    window.open('https://wa.me/260977858275?text=Hello%2C%20I%20completed%20the%20Joelhood%20Automation%20diagnostic.', '_blank');
+    var tier = document.getElementById('resultTierName').textContent || 'Unknown Tier';
+    var mirrorBody = document.getElementById('mirrorBody').textContent || '';
+    var costMatch = mirrorBody.match(/K[\d,]+ per month/);
+    var annualMatch = mirrorBody.match(/K[\d,]+ per year/);
+    var monthlyCost = costMatch ? costMatch[0] : 'not calculated';
+    var annualCost = annualMatch ? annualMatch[0] : 'not calculated';
+    var budgetMap = {thinking:'Not yet budgeted',small:'Under K2,000',medium:'K2,000-K10,000',ready:'Ready to invest'};
+    var budgetLabel = budgetMap[answers['budget_readiness']] || '';
+
+    captureResult(tier, monthlyCost, annualCost, budgetLabel);
+
+    var message = encodeURIComponent(
+      'Hello Joelhood. I completed the Automation Diagnostic.' +
+      '%0A%0ATier: ' + tier +
+      '%0AMonthly cost of manual work: ' + monthlyCost +
+      '%0AAnnual cost: ' + annualCost +
+      '%0ABudget readiness: ' + budgetLabel +
+      '%0A%0AI would like to proceed.'
+    );
+    window.open('https://wa.me/260977858275?text=' + message, '_blank');
+  }
+
+  function captureResult(tier, monthlyCost, annualCost, budgetLabel) {
+    try {
+      var formURL = 'https://docs.google.com/forms/d/e/1FAIpQLSeyEGGliqbR3KlssbT0ZGK_HQxlG6_Ua6EZlzRwgAjrgGZORA/formResponse';
+      var manualTasks = (answers['manual_tasks'] || []).join(', ');
+      var params = [
+        'entry.2097226239=' + encodeURIComponent(answers['business_type'] || ''),
+        'entry.1444346291=' + encodeURIComponent(answers['weekly_transactions'] || ''),
+        'entry.528615041='  + encodeURIComponent(manualTasks),
+        'entry.1869602353=' + encodeURIComponent(answers['monthly_revenue'] || ''),
+        'entry.2066992260=' + encodeURIComponent(budgetLabel),
+        'entry.791137695='  + encodeURIComponent(tier),
+        'entry.1359302944=' + encodeURIComponent(monthlyCost),
+        'entry.929385751='  + encodeURIComponent(annualCost),
+        'entry.1709688429=' + encodeURIComponent('Yes')
+      ].join('&');
+      fetch(formURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: params
+      });
+    } catch(err) {
+      console.error('Capture failed: ' + err.message);
+    }
   }
 </script>
 
