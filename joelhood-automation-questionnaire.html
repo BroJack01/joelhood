@@ -286,6 +286,26 @@
     color: var(--white);
   }
 
+  /* Frequency selector inside time input row */
+  .freq-select {
+    background: var(--grey);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 8px 10px;
+    width: 100%;
+    margin-top: 8px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+
+  .freq-select option {
+    background: var(--grey);
+    color: var(--white);
+  }
+
   /* Time input that appears after checkbox is selected */
   .time-input-row {
     display: none;
@@ -656,7 +676,7 @@
 
   <!-- Progress -->
   <div class="progress-label">
-    <span id="progressText">Section 1 of 4</span>
+    <span id="progressText">Section 1 of 5</span>
     <span id="progressPct">0%</span>
   </div>
   <div class="progress-bar">
@@ -723,23 +743,23 @@
         <div class="checkbox-grid options" data-name="manual_tasks" data-type="checkbox">
           <div class="task-wrap">
             <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="receipts" data-timeid="t_receipts"><span class="option-marker"></span><span class="option-text">Sending receipts or confirmations</span></label>
-            <div class="time-input-row" id="t_receipts"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="receipts"><span>mins</span></div></div>
+            <div class="time-input-row" id="t_receipts"><label>How many minutes does this take?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="receipts"><span>mins</span></div><select class="freq-select" data-freq="receipts"><option value="pertxn">Every transaction</option><option value="daily">Once a day</option><option value="weekly">Once a week</option><option value="monthly">Once a month</option></select></div>
           </div>
           <div class="task-wrap">
             <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="recording" data-timeid="t_recording"><span class="option-marker"></span><span class="option-text">Recording sales or income</span></label>
-            <div class="time-input-row" id="t_recording"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="recording"><span>mins</span></div></div>
+            <div class="time-input-row" id="t_recording"><label>How many minutes does this take?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="recording"><span>mins</span></div><select class="freq-select" data-freq="recording"><option value="pertxn">Every transaction</option><option value="daily">Once a day</option><option value="weekly" selected>Once a week</option><option value="monthly">Once a month</option></select></div>
           </div>
           <div class="task-wrap">
             <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="followup" data-timeid="t_followup"><span class="option-marker"></span><span class="option-text">Following up with customers</span></label>
-            <div class="time-input-row" id="t_followup"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="followup"><span>mins</span></div></div>
+            <div class="time-input-row" id="t_followup"><label>How many minutes does this take?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="followup"><span>mins</span></div><select class="freq-select" data-freq="followup"><option value="pertxn">Every transaction</option><option value="daily">Once a day</option><option value="weekly">Once a week</option><option value="monthly">Once a month</option></select></div>
           </div>
           <div class="task-wrap">
             <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="inventory" data-timeid="t_inventory"><span class="option-marker"></span><span class="option-text">Tracking stock or inventory</span></label>
-            <div class="time-input-row" id="t_inventory"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="inventory"><span>mins</span></div></div>
+            <div class="time-input-row" id="t_inventory"><label>How many minutes does this take?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="inventory"><span>mins</span></div><select class="freq-select" data-freq="inventory"><option value="pertxn">Every transaction</option><option value="daily">Once a day</option><option value="weekly">Once a week</option><option value="monthly">Once a month</option></select></div>
           </div>
           <div class="task-wrap">
             <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="staff" data-timeid="t_staff"><span class="option-marker"></span><span class="option-text">Managing staff hours or attendance</span></label>
-            <div class="time-input-row" id="t_staff"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="staff"><span>mins</span></div></div>
+            <div class="time-input-row" id="t_staff"><label>How many minutes does this take?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="staff"><span>mins</span></div><select class="freq-select" data-freq="staff"><option value="pertxn">Every transaction</option><option value="daily">Once a day</option><option value="weekly">Once a week</option><option value="monthly">Once a month</option></select></div>
           </div>
           <div class="task-wrap">
             <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="reports" data-timeid="t_reports"><span class="option-marker"></span><span class="option-text">Producing reports or summaries</span></label>
@@ -747,7 +767,7 @@
           </div>
           <div class="task-wrap">
             <label class="option checkbox"><input type="checkbox" name="manual_tasks" value="delivery" data-timeid="t_delivery"><span class="option-marker"></span><span class="option-text">Delivering product or service after payment</span></label>
-            <div class="time-input-row" id="t_delivery"><label>How many minutes does this take you each time?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="delivery"><span>mins</span></div></div>
+            <div class="time-input-row" id="t_delivery"><label>How many minutes does this take?</label><div class="input-line"><input type="number" min="1" max="120" placeholder="0" data-task="delivery"><span>mins</span></div><select class="freq-select" data-freq="delivery"><option value="pertxn">Every transaction</option><option value="daily">Once a day</option><option value="weekly">Once a week</option><option value="monthly">Once a month</option></select></div>
           </div>
         </div>
       </div>
@@ -779,7 +799,27 @@
     <div class="section">
       <div class="section-header">
         <span class="section-number">03 —</span>
-        <span class="section-title">Your Business Complexity</span>
+        <span class="section-title">What You Need Built</span>
+      </div>
+
+      <!-- Q_SYSTEM — Primary tier determinant -->
+      <div class="question" id="q_system">
+        <div class="question-label">Which of these best describes what you need your system to do?</div>
+        <span class="question-note">READ ALL THREE CAREFULLY BEFORE SELECTING</span>
+        <div class="options" data-name="system_need" data-type="radio">
+          <label class="option radio"><input type="radio" name="system_need" value="1"><span class="option-marker"></span><span class="option-text"><strong>Take orders or bookings, collect payment, and confirm automatically.</strong> One flow, start to finish. Payment comes in, something goes out, sale gets recorded. Simple and clean.</span></label>
+          <label class="option radio"><input type="radio" name="system_need" value="2"><span class="option-marker"></span><span class="option-text"><strong>Do all of the above — plus track sales over time, send follow-ups automatically, or manage basic staff records.</strong> Multiple things working together, not just one flow.</span></label>
+          <label class="option radio"><input type="radio" name="system_need" value="3"><span class="option-marker"></span><span class="option-text"><strong>Do all of the above — plus generate payslips, financial statements, certificates, or compliance documents.</strong> A complete business infrastructure running on its own.</span></label>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-number">04 —</span>
+        <span class="section-title">Supporting Details</span>
       </div>
 
       <!-- Q7 -->
@@ -829,10 +869,11 @@
       </div>
     </div>
 
-    <!-- SECTION 4 -->
+    <!-- SECTION 4 (was 3) — now Supporting Details -->
+    <!-- SECTION 5 -->
     <div class="section">
       <div class="section-header">
-        <span class="section-number">04 —</span>
+        <span class="section-number">05 —</span>
         <span class="section-title">Readiness</span>
       </div>
 
@@ -887,6 +928,8 @@
       <div class="result-investment-label">— INVESTMENT RANGE —</div>
       <div class="result-investment-amount" id="resultInvestment"></div>
     </div>
+
+    <div id="resultPayback" style="display:none; font-size:14px; color:rgba(245,242,236,0.8); line-height:1.7; padding:16px 20px; background:rgba(201,168,76,0.08); border-left:3px solid var(--gold); margin-bottom:24px;"></div>
 
     <div class="result-timeline">
       <div class="result-meta-box">
@@ -992,6 +1035,14 @@
     });
   });
 
+  // Frequency selector change — recalculate mirror when frequency changes
+  document.querySelectorAll('.freq-select').forEach(sel => {
+    sel.addEventListener('change', () => { updateMirror(); });
+    sel.addEventListener('click', (e) => { e.stopPropagation(); });
+    sel.addEventListener('touchstart', (e) => { e.stopPropagation(); });
+    sel.addEventListener('touchend', (e) => { e.stopPropagation(); sel.focus(); });
+  });
+
   // Time input — stop tap from bubbling to parent label, allow keyboard to open
   document.querySelectorAll('.time-input-row input[type="number"]').forEach(numInput => {
     numInput.addEventListener('click', (e) => {
@@ -1016,8 +1067,8 @@
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('progressPct').textContent = pct + '%';
 
-    const section = pct < 30 ? 1 : pct < 55 ? 2 : pct < 80 ? 3 : 4;
-    document.getElementById('progressText').textContent = 'Section ' + section + ' of 4';
+    const section = pct < 20 ? 1 : pct < 45 ? 2 : pct < 70 ? 3 : pct < 90 ? 4 : 5;
+    document.getElementById('progressText').textContent = 'Section ' + section + ' of 5';
   }
 
   function updateMirror() {
@@ -1029,26 +1080,37 @@
     if (!txn || !freq || !rate || tasks.length === 0) return;
 
     // Read client-entered minutes from visible time inputs
-    let minutesPerTxn = 0;
-    let weeklyReportMins = 0;
-    let allMinutesEntered = true;
+    // Each task has a frequency selector — per transaction, daily, weekly, or monthly
+    let weeklyMinsFromTasks = 0;
+    let hasAnyTime = false;
 
     tasks.forEach(task => {
       const numInput = document.querySelector('.time-input-row input[data-task="' + task + '"]');
+      const freqSelect = document.querySelector('.freq-select[data-freq="' + task + '"]');
       const mins = numInput ? parseFloat(numInput.value) : 0;
-      if (!mins || mins <= 0) { allMinutesEntered = false; return; }
+      if (!mins || mins <= 0) return;
+      hasAnyTime = true;
+
+      const freqVal = freqSelect ? freqSelect.value : 'pertxn';
+
       if (task === 'reports') {
-        weeklyReportMins = mins;
-      } else {
-        minutesPerTxn += mins;
+        // Reports always treated as weekly
+        weeklyMinsFromTasks += mins;
+      } else if (freqVal === 'pertxn') {
+        // Per transaction — multiply by weekly volume and frequency multiplier
+        weeklyMinsFromTasks += txn * mins * freq;
+      } else if (freqVal === 'daily') {
+        weeklyMinsFromTasks += mins * 5; // 5 working days
+      } else if (freqVal === 'weekly') {
+        weeklyMinsFromTasks += mins;
+      } else if (freqVal === 'monthly') {
+        weeklyMinsFromTasks += mins / 4;
       }
     });
 
-    // Only show mirror once at least one task has a time entered
-    const hasAnyTime = minutesPerTxn > 0 || weeklyReportMins > 0;
     if (!hasAnyTime) return;
 
-    const weeklyMins = (txn * minutesPerTxn * freq) + weeklyReportMins;
+    const weeklyMins = weeklyMinsFromTasks;
     const monthlyHours = Math.round((weeklyMins * 4) / 60);
     const monthlyCost = Math.round(monthlyHours * rate);
     const annualCost = monthlyCost * 12;
@@ -1065,7 +1127,7 @@
     document.getElementById('mirrorTitle').textContent = 'You are spending ' + monthlyHours + ' hours a month doing work a system should handle.';
     document.getElementById('mirrorBody').innerHTML =
       'You handle <span class="mirror-number">' + txnLabel + '</span> transactions a week — and ' + freqLabel + '. ' +
-      'The tasks you are doing manually add up to <span class="mirror-number">' + Math.round(minutesPerTxn) + ' minutes per transaction</span> — your own numbers, not our estimate. ' +
+      'Based on the times you entered, your manual tasks consume <span class="mirror-number">' + Math.round(weeklyMins) + ' minutes every week</span> — your own numbers, not our estimate. ' +
       'Over a month that is <span class="mirror-number">' + monthlyHours + ' hours</span> of your time going into tasks that generate no new value — only maintenance.<br><br>' +
       'Based on what your business earns, your time is worth approximately <span class="mirror-number">K' + rate + ' per hour</span>. ' +
       'That means manual work is costing you <span class="mirror-number">K' + monthlyCost.toLocaleString() + ' per month</span> — ' +
@@ -1080,7 +1142,7 @@
   }
 
   function calculateResult() {
-    const required = ['business_type','team_size','business_age','manual_frequency','weekly_transactions','product_variety','monthly_revenue','budget_readiness'];
+    const required = ['business_type','team_size','business_age','manual_frequency','weekly_transactions','system_need','monthly_revenue','budget_readiness'];
     const missing = required.filter(k => !answers[k]);
     if (missing.length > 3) {
       alert('Please complete more of the form before seeing your diagnosis.');
@@ -1095,21 +1157,37 @@
     const products = parseInt(answers['product_variety'] || 1);
     const budget = answers['budget_readiness'];
 
-    const tier3Docs = docs.some(d => ['payslips','compliance','certificates'].includes(d));
-    const tier3Staff = staffMgmt.includes('formal');
-    const highVolume = txn >= 200 && (products >= 2 || manualTasks.length >= 4);
+    // PRIMARY TIER — from client self-selection
+    const systemNeed = parseInt(answers['system_need'] || 1);
+    let tier = systemNeed; // Start with what client said they need
 
-    let tier;
-    if (tier3Docs || tier3Staff || highVolume) {
+    // CONFIRMATION — supporting answers can upgrade but never downgrade
+    const tier3Docs  = docs.some(d => ['payslips','compliance','certificates'].includes(d));
+    const tier3Staff = staffMgmt.includes('formal');
+    const highVolume = txn >= 200 && manualTasks.length >= 4;
+
+    // Upgrade to Tier 3 if supporting answers demand it
+    if (tier < 3 && (tier3Docs || tier3Staff || highVolume)) {
       tier = 3;
-    } else if (
-      docs.includes('sales_summary') || docs.includes('register') ||
-      staffMgmt.includes('attendance') || staffMgmt.includes('salaries') ||
-      manualTasks.length >= 4 || txn >= 51 || products >= 2
-    ) {
+    }
+
+    // Upgrade to Tier 2 if client said Tier 1 but has clear Tier 2 indicators
+    if (tier < 2 && (
+      staffMgmt.includes('salaries') ||
+      docs.includes('payslips') ||
+      txn >= 51 ||
+      manualTasks.length >= 4
+    )) {
       tier = 2;
-    } else {
-      tier = 1;
+    }
+
+    // Tier 1 Plus — client selected Tier 1 but has dual flow complexity
+    // Indicated by: 2-3 manual tasks + periodic recording + some staff or docs
+    if (tier === 1 && (
+      (manualTasks.length >= 2 && (staffMgmt.includes('attendance') || docs.includes('sales_summary'))) ||
+      (manualTasks.length >= 3)
+    )) {
+      tier = '1p';
     }
 
     // Budget conflict
@@ -1144,6 +1222,22 @@
           'Revisions requested after sign-off attract a new quote'
         ],
         cta: 'Ready to start? Send a WhatsApp message with your business name and the words Single Flow. We confirm scope, you pay, we begin within 48 hours.'
+      },
+      '1p': {
+        label: 'Your Diagnosis — Tier One Plus',
+        name: 'Dual Flow System',
+        body: 'Your business needs more than one automated flow — but not a fully connected system. You have two distinct processes that currently run manually and independently. Each one needs automating. But they do not need to talk to each other.\n\nA Dual Flow system automates both independently. Two triggers. Two outputs. Two records. Each running cleanly on its own. You stop managing both manually without the cost or complexity of a full Connected Operations build.\n\nThis is the right fit for businesses that have outgrown a Single Flow but are not yet running the kind of connected intelligence that Tier Two requires. Built on Google tools you already use. No subscriptions. No foreign templates.',
+        investment: 'K6,000 to K9,000',
+        timeline: '3 to 4 weeks from payment',
+        payment: '50% upfront via MoMo before build begins. 50% on delivery and sign-off. Payment due within 7 days of delivery. After 7 days a 5% weekly fee applies.',
+        phases: 'Phase 1 (Weeks 1–2) — First flow built and tested. You confirm it works. Phase 2 (Weeks 3–4) — Second flow built and tested. Full system delivered and signed off.',
+        revisions: [
+          'Two rounds of revisions included — one per flow',
+          'Each revision round covers one consolidated set of feedback within 48 hours of delivery',
+          'Scope changes are quoted before any work continues',
+          'Post-handover support for 14 days for bug fixes only'
+        ],
+        cta: 'Send a WhatsApp message with your business name and the words Dual Flow. We confirm your two flows and scope before any payment is made.'
       },
       2: {
         label: 'Your Diagnosis — Tier Two',
@@ -1191,6 +1285,51 @@
     const phasesEl = document.getElementById('resultPhases');
     if (phasesEl) phasesEl.textContent = t.phases;
 
+    // Payback calculation — use live mirror variables directly
+    // Do not read from DOM — form is hidden at this point
+    try {
+      const txn2       = parseFloat(answers['weekly_transactions'] || 0);
+      const freq2      = parseFloat(answers['manual_frequency'] || 0);
+      const rate2      = parseFloat(answers['monthly_revenue'] || 0);
+      const tasks2     = answers['manual_tasks'] || [];
+      let weeklyMins2  = 0;
+
+      tasks2.forEach(function(task) {
+        const numInput   = document.querySelector('.time-input-row input[data-task="' + task + '"]');
+        const freqSelect = document.querySelector('.freq-select[data-freq="' + task + '"]');
+        const mins       = numInput ? parseFloat(numInput.value) : 0;
+        if (!mins || mins <= 0) return;
+        const freqVal    = freqSelect ? freqSelect.value : 'pertxn';
+        if (task === 'reports') {
+          weeklyMins2 += mins;
+        } else if (freqVal === 'pertxn') {
+          weeklyMins2 += txn2 * mins * freq2;
+        } else if (freqVal === 'daily') {
+          weeklyMins2 += mins * 5;
+        } else if (freqVal === 'weekly') {
+          weeklyMins2 += mins;
+        } else if (freqVal === 'monthly') {
+          weeklyMins2 += mins / 4;
+        }
+      });
+
+      const monthlyHours2 = Math.round((weeklyMins2 * 4) / 60);
+      const monthlyCost2  = Math.round(monthlyHours2 * rate2);
+      const midpoints     = {1: 4000, '1p': 7500, 2: 13500, 3: 49000};
+      const midpoint      = midpoints[tier] || 0;
+      const paybackEl     = document.getElementById('resultPayback');
+
+      if (paybackEl && monthlyCost2 > 200 && midpoint > 0) {
+        const months = Math.ceil(midpoint / monthlyCost2);
+        if (months <= 72) {
+          paybackEl.textContent = 'At your current loss rate of K' + monthlyCost2.toLocaleString() + ' per month, this system pays for itself in approximately ' + months + ' month' + (months === 1 ? '' : 's') + '.';
+          paybackEl.style.display = 'block';
+        }
+      }
+    } catch(err) {
+      console.error('Payback calc error: ' + err.message);
+    }
+
     const revList = document.getElementById('revisionList');
     revList.innerHTML = '';
     t.revisions.forEach(r => {
@@ -1203,6 +1342,9 @@
 
     if (tier === 2 && budget === 'thinking') {
       document.getElementById('ctaText').textContent = 'Your diagnosis is Tier Two. Before proceeding, note that this build starts at K10,000. If budget is still being arranged, reach out anyway — we can discuss a phased approach. ' + t.cta;
+    }
+    if (tier === '1p' && budget === 'thinking') {
+      document.getElementById('ctaText').textContent = 'Your diagnosis is Tier One Plus. This build starts at K6,000. If budget is still being arranged, reach out anyway — we can discuss options. ' + t.cta;
     }
 
     document.getElementById('formContent').classList.add('hidden');
@@ -1222,15 +1364,17 @@
 
     captureResult(tier, monthlyCost, annualCost, budgetLabel);
 
-    var message = encodeURIComponent(
-      'Hello Joelhood. I completed the Automation Diagnostic.' +
-      '%0A%0ATier: ' + tier +
-      '%0AMonthly cost of manual work: ' + monthlyCost +
-      '%0AAnnual cost: ' + annualCost +
-      '%0ABudget readiness: ' + budgetLabel +
-      '%0A%0AI would like to proceed.'
-    );
-    window.open('https://wa.me/260977858275?text=' + message, '_blank');
+    var message = [
+      'Hello Joelhood. I completed the Automation Diagnostic.',
+      '',
+      'Tier: ' + tier,
+      'Monthly cost of manual work: ' + monthlyCost,
+      'Annual cost: ' + annualCost,
+      'Budget readiness: ' + budgetLabel,
+      '',
+      'I would like to proceed.'
+    ].join('\n');
+    window.open('https://wa.me/260977858275?text=' + encodeURIComponent(message), '_blank');
   }
 
   function captureResult(tier, monthlyCost, annualCost, budgetLabel) {
